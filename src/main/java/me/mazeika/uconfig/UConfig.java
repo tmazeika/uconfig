@@ -19,6 +19,7 @@ class UConfig extends Config
     private static final String KEY_INDICES_ESCAPE = "\\";
 
     private final File file;
+    private final boolean lazyLoad;
     private final Parser parser;
     private final ParserType parserType;
 
@@ -27,6 +28,7 @@ class UConfig extends Config
     public UConfig(File file, boolean lazyLoad)
     {
         this.file = file;
+        this.lazyLoad = lazyLoad;
         parser = Parser.create(file.getName());
         parserType = parser.getType();
 
@@ -47,7 +49,14 @@ class UConfig extends Config
     {
         final String[] parsedKey = parseKey(key, indices);
 
-        Object data = getData();
+        Object data;
+
+        if (lazyLoad) {
+            data = getData();
+        }
+        else {
+            data = this.data;
+        }
 
         for (int i = 0; i < parsedKey.length; i++) {
             String keyPart = parsedKey[i];

@@ -1,6 +1,6 @@
-package io.uconfig.parsing;
+package me.mazeika.uconfig.parsing;
 
-import io.uconfig.ParseException;
+import me.mazeika.uconfig.ParseException;
 
 public abstract class Parser
 {

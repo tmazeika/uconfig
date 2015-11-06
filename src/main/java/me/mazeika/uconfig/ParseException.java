@@ -1,4 +1,4 @@
-package io.uconfig;
+package me.mazeika.uconfig;
 
 public class ParseException extends RuntimeException
 {

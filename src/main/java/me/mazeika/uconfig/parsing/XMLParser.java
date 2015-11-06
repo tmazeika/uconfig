@@ -1,4 +1,4 @@
-package io.uconfig.parsing;
+package me.mazeika.uconfig.parsing;
 
 import org.json.XML;
 import org.yaml.snakeyaml.Yaml;

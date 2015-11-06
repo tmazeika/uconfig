@@ -1,8 +1,8 @@
-package io.uconfig.parsing;
+package me.mazeika.uconfig.parsing;
 
 import org.yaml.snakeyaml.Yaml;
 
-class JSONParser extends Parser
+class YAMLParser extends Parser
 {
     private static final Yaml yaml = new Yaml();
 
@@ -15,6 +15,6 @@ class JSONParser extends Parser
     @Override
     public ParserType getType()
     {
-        return ParserType.JSON;
+        return ParserType.YAML;
     }
 }

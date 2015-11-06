@@ -1,4 +1,4 @@
-package io.uconfig.parsing;
+package me.mazeika.uconfig.parsing;
 
 public enum ParserType
 {

@@ -1,4 +1,4 @@
-package io.uconfig;
+package me.mazeika.uconfig;
 
 import org.junit.Before;
 import org.junit.Test;

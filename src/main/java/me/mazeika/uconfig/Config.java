@@ -1,4 +1,4 @@
-package io.uconfig;
+package me.mazeika.uconfig;
 
 import java.io.File;
 import java.util.Optional;

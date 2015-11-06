@@ -1,7 +1,7 @@
-package io.uconfig;
+package me.mazeika.uconfig;
 
-import io.uconfig.parsing.Parser;
-import io.uconfig.parsing.ParserType;
+import me.mazeika.uconfig.parsing.Parser;
+import me.mazeika.uconfig.parsing.ParserType;
 
 import java.io.BufferedReader;
 import java.io.File;

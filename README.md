@@ -5,6 +5,7 @@ uconfig is a Java 8 config library. It's well documented, lightweight, completel
 - JSON
 - YAML
 - XML
+- Properties
 
 It's perfect for simple to complex configurations in your application. No need to deal  with casting objects to their correct data type, and you don't have to make your own parser or data model.
 
@@ -20,7 +21,7 @@ Usage is ridiculously easy. First, if you're using Maven, just add the following
 </dependency>
 ```
 
-Next, create a JSON, XML, or YAML file in the root of your project. For testing, you can copy and paste the following into config.json:
+Next, create a JSON, XML, YAML, or properties file in the root of your project. For testing, you can copy and paste the following into config.json:
 
 ```json
 {

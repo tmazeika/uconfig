@@ -13,34 +13,34 @@ It's perfect for simple to complex configurations in your application. No need t
 Usage is ridiculously easy. First, if you're using Maven, just add the following to your pom.xml:
 
 ```xml
-    <dependency>
-    	<groupId>io.uconfig</groupId>
-    	<artifactId>uconfig</artifactId>
-    	<version>0.1</version>
-    </dependency>
+<dependency>
+    <groupId>io.uconfig</groupId>
+    <artifactId>uconfig</artifactId>
+    <version>0.1</version>
+</dependency>
 ```
 
 Next, create a JSON, XML, or YAML file in the root of your project. For testing, you can copy and paste the following into config.json:
 
 ```json
-    {
-        "server": {
-            "host": "127.0.0.1",
-            "port": 8080
-        }
+{
+    "server": {
+        "host": "127.0.0.1",
+        "port": 8080
     }
+}
 ```
 
 Now, you have to create the config object. Just use the static factory method to create one for you:
 
 ```java
-    public static void main(String[] args)
-    {
-        Config config = Config.create("config.json");
-        String host = config.getOrDefault("server.host", "");
+public static void main(String[] args)
+{
+    Config config = Config.create("config.json");
+    String host = config.getOrDefault("server.host", "");
 
-        System.out.println(host);
-    }
+    System.out.println(host);
+}
 ```
 
 Run it, and it should print `127.0.0.1`! That was easy.
@@ -50,19 +50,19 @@ Run it, and it should print `127.0.0.1`! That was easy.
 You may have noticed that `Config` has some other methods. The methods' Javadocs give a ton of information about them, but here's some example usages of them. For these examples, the following JSON file is assumed:
 
 ```json
-    {
-        "path": {
-            "to": {
-                "value": "hello world!"
-            }
-        },
-        "names": [
-            "T.J.",
-            {
-                "phone": 1234567890
-            }
-        ]
-    }
+{
+    "path": {
+        "to": {
+            "value": "hello world!"
+        }
+    },
+    "names": [
+        "T.J.",
+        {
+            "phone": 1234567890
+        }
+    ]
+}
 ```
 
 ---
@@ -74,8 +74,8 @@ Returns the value at the given key. If the value is not found or is `null`, the 
 Examples:
 
 ```java
-    config.getOrDefault("path.to.value", "Not found"); // "hello world!"
-    config.getOrDefault("server.nonexistent", "Not found"); // "Not found"
+config.getOrDefault("path.to.value", "Not found"); // "hello world!"
+config.getOrDefault("server.nonexistent", "Not found"); // "Not found"
 ```
 
 ---
@@ -87,9 +87,9 @@ Same as above, however, all `#` characters are replaced with the respective inde
 Examples:
 
 ```java
-    config.getOrDefaultWithIndices("names.#", "Not found", 0); // "T.J."
-    config.getOrDefaultWithIndices("names.#.phone", "Not found", 1); // 1234567890
-    config.getOrDefaultWithIndices("names.#.phone", "Not found", 2); // "Not found"
+config.getOrDefaultWithIndices("names.#", "Not found", 0); // "T.J."
+config.getOrDefaultWithIndices("names.#.phone", "Not found", 1); // 1234567890
+config.getOrDefaultWithIndices("names.#.phone", "Not found", 2); // "Not found"
 ```
 
 ---
@@ -103,8 +103,8 @@ Returns an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Option
 Examples:
 
 ```java
-    config.get("path.to.value").orElse("Not found"); // "hello, world!"
-    config.<Integer>get("names.1.phone").orElse(0); // 1234567890
+config.get("path.to.value").orElse("Not found"); // "hello, world!"
+config.<Integer>get("names.1.phone").orElse(0); // 1234567890
 ```
 
 ---
@@ -116,8 +116,8 @@ Returns an [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Option
 Examples:
 
 ```java
-    config.getWithIndices("names.#", 0).orElse("Not found"); // "T.J."
-    config.<Integer>get("names.#.phone", 1).orElse(0); // 1234567890
+config.getWithIndices("names.#", 0).orElse("Not found"); // "T.J."
+config.<Integer>get("names.#.phone", 1).orElse(0); // 1234567890
 ```
 
 ---
@@ -135,20 +135,20 @@ As keys are specified in a special dot notation, there are some cases where you 
 In order to properly allow accessing XML elements using the special dot notation, it is converted to JSON. While JSON does not support attributes like in XML, they can still be accessed. The following config.xml file will be parsed and examples will demonstrate how to navigate it:
 
 ```xml
-    <root>
-        <path>
-            <to>
-                <value attr="my_value"/>
-            </to>
-        </path>
-    </root>
+<root>
+    <path>
+        <to>
+            <value attr="my_value"/>
+        </to>
+    </path>
+</root>
 ```
 
 Examples:
 
 ```java
-    config.getOrDefault("root.path.to.value.attr", "Not found") // "my_value"
-    config.getOrDefault("root.path.to.value", "Not found") // "Not found"
+config.getOrDefault("root.path.to.value.attr", "Not found") // "my_value"
+config.getOrDefault("root.path.to.value", "Not found") // "Not found"
 ```
 
 In addition, there are a few things to be aware of in order to avoid unintended or odd functionality:

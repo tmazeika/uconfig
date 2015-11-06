@@ -7,13 +7,16 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class ConfigTest
 {
     private Config jsonConfig;
     private Config xmlConfig;
     private Config yamlConfig;
+    private Config propertiesConfig;
 
     @Before
     public void setUp() throws URISyntaxException
@@ -24,201 +27,241 @@ public class ConfigTest
                 new File(getClass().getResource("/config.xml").toURI()), true);
         yamlConfig = Config.create(
                 new File(getClass().getResource("/config.yaml").toURI()), true);
+        propertiesConfig = Config.create(new File(getClass().getResource(
+                "/config.properties").toURI()), true);
     }
 
     @Test
     public void testCreateWithFilePathNoLazyLoad()
     {
-        assertNotNull(Config.create("src/test/resources/config.json", false));
+        assertThat(Config.create("src/test/resources/config.json", false),
+                notNullValue());
     }
 
     @Test
     public void testCreateWithFilePath()
     {
-        assertNotNull(Config.create("src/test/resources/config.json"));
+        assertThat(Config.create("src/test/resources/config.json"),
+                notNullValue());
     }
 
     @Test
     public void testCreateWithFile() throws URISyntaxException
     {
-        assertNotNull(Config.create(new File(getClass()
-                .getResource("/config.json").toURI())));
+        assertThat(Config.create(new File(getClass()
+                .getResource("/config.json").toURI())), notNullValue());
     }
 
     @Test
     public void testGetOrDefaultForJSONRegularPath()
     {
-        assertEquals("hello", jsonConfig.getOrDefault("path.to.value", ""));
+        assertThat(jsonConfig.getOrDefault("path.to.value", ""), is("hello"));
     }
 
     @Test
     public void testGetOrDefaultForJSONEscapedDot()
     {
-        assertEquals("dotescaping", jsonConfig.getOrDefault("dot\\.path", ""));
+        assertThat(jsonConfig.getOrDefault("dot\\.path", ""),
+                is("dotescaping"));
     }
 
     @Test
     public void testGetOrDefaultForJSONEscapedNumbers()
     {
-        assertEquals("numbers", jsonConfig.getOrDefault("\\1.\\3", ""));
+        assertThat(jsonConfig.getOrDefault("\\1.\\3", ""), is("numbers"));
     }
 
     @Test
     public void testGetOrDefaultWithIndicesForJSONEscapedAll()
     {
-        assertEquals("item1", jsonConfig.getOrDefaultWithIndices(
-                "\\23.\\#.dot\\.path.#", "", 1));
+        assertThat(jsonConfig.getOrDefaultWithIndices(
+                "\\23.\\#.dot\\.path.#", "", 1), is("item1"));
     }
 
     @Test
     public void testGetOrDefaultForJSONDouble()
     {
-        assertEquals(3.14, jsonConfig.getOrDefault("path.to.double", 0d), 0.01);
+        assertThat(jsonConfig.getOrDefault("path.to.double", 0d), is(3.14));
     }
 
     @Test
     public void testGetOrDefaultForJSONNull()
     {
-        assertEquals("x", jsonConfig.getOrDefault("path.to.null", "x"));
+        assertThat(jsonConfig.getOrDefault("path.to.null", "x"), is("x"));
     }
 
     @Test
     public void testGetOrDefaultForJSONArray()
     {
-        assertEquals("item0", jsonConfig.getOrDefault("array.0", ""));
+        assertThat(jsonConfig.getOrDefault("array.0", ""), is("item0"));
     }
 
     @Test
     public void testGetOrDefaultForJSONArrayAndMap()
     {
-        assertEquals("world", jsonConfig.getOrDefault("array.1.key", ""));
+        assertThat(jsonConfig.getOrDefault("array.1.key", ""), is("world"));
     }
 
     @Test
     public void testGetOrDefaultForJSONNonExistent()
     {
-        assertEquals("nonexistent", jsonConfig.getOrDefault("array.1.x",
-                "nonexistent"));
+        assertThat(jsonConfig.getOrDefault("array.1.x", "nonexistent"),
+                is("nonexistent"));
+    }
+
+    @Test
+    public void testGetOrDefaultForPropertiesRegularPath()
+    {
+        assertThat(propertiesConfig.getOrDefault("path\\.to\\.value", ""),
+                is("hello"));
+    }
+
+    @Test
+    public void testGetOrDefaultForPropertiesEscapedAll()
+    {
+        assertThat(propertiesConfig.getOrDefault(
+                "2\\.#\\.\\.\\.", 0) / 2, is(4));
+    }
+
+    @Test
+    public void testGetOrDefaultForPropertiesDouble()
+    {
+        assertThat(propertiesConfig.getOrDefault("double", 0d), is(3.14));
+    }
+
+    @Test
+    public void testGetOrDefaultForPropertiesRegular()
+    {
+        assertThat(propertiesConfig.getOrDefault("value", ""), is("hi"));
+    }
+
+    @Test
+    public void testGetOrDefaultForPropertiesNonExistent()
+    {
+        assertThat(propertiesConfig.getOrDefault("value.nonexistent", "x"),
+                is("x"));
     }
 
     @Test
     public void testGetOrDefaultForXMLRegularPath()
     {
-        assertEquals("hello", xmlConfig.getOrDefault("root.path.to.value", ""));
+        assertThat(xmlConfig.getOrDefault("root.path.to.value", ""),
+                is("hello"));
     }
 
     @Test
     public void testGetOrDefaultForXMLEmptyWithAttribute()
     {
-        assertEquals("", xmlConfig.getOrDefault("root.path.item.0", ""));
+        assertThat(xmlConfig.getOrDefault("root.path.item.0", "x"), is("x"));
     }
 
     @Test
     public void testGetOrDefaultForXMLEmpty()
     {
-        assertEquals("", xmlConfig.getOrDefault("root.path.anotherBlank", ""));
+        assertThat(xmlConfig.getOrDefault("root.path.anotherBlank", "x"),
+                is(""));
     }
 
     @Test
     public void testGetOrDefaultForXMLAttribute()
     {
-        assertEquals("world", xmlConfig.getOrDefault("root.path.item.0.attr",
-                ""));
+        assertThat(xmlConfig.getOrDefault("root.path.item.0.attr",
+                ""), is("world"));
     }
 
     @Test
     public void testGetOrDefaultForXMLNonExistent()
     {
-        assertEquals("nonexistent", xmlConfig.getOrDefault("root.path.x",
-                "nonexistent"));
+        assertThat(xmlConfig.getOrDefault("root.path.x", "nonexistent"),
+                is("nonexistent"));
     }
 
     @Test
     public void testGetOrDefaultForYAMLRegularPath()
     {
-        assertEquals("hello", jsonConfig.getOrDefault("path.to.value", ""));
+        assertThat(jsonConfig.getOrDefault("path.to.value", ""), is("hello"));
     }
 
     @Test
     public void testGetOrDefaultForYAMLDouble()
     {
-        assertEquals(3.14, yamlConfig.getOrDefault("path.to.double", 0d), 0.01);
+        assertThat(yamlConfig.getOrDefault("path.to.double", 0d), is(3.14));
     }
 
     @Test
     public void testGetOrDefaultForYAMLNull()
     {
-        assertEquals("x", yamlConfig.getOrDefault("path.to.null", "x"));
+        assertThat(yamlConfig.getOrDefault("path.to.null", "x"), is("x"));
     }
 
     @Test
     public void testGetOrDefaultForYAMLEmpty()
     {
-        assertEquals("x", yamlConfig.getOrDefault("path.to.empty", "x"));
+        assertThat(yamlConfig.getOrDefault("path.to.empty", "x"), is("x"));
     }
 
     @Test
     public void testGetOrDefaultForYAMLArray()
     {
-        assertEquals("item0", yamlConfig.getOrDefault("array.0", ""));
+        assertThat(yamlConfig.getOrDefault("array.0", ""), is("item0"));
     }
 
     @Test
     public void testGetOrDefaultForYAMLArrayAndMap()
     {
-        assertEquals("world", yamlConfig.getOrDefault("array.1.key", ""));
+        assertThat(yamlConfig.getOrDefault("array.1.key", ""), is("world"));
     }
 
     @Test
     public void testGetOrDefaultForYAMLNonExistent()
     {
-        assertEquals("nonexistent", yamlConfig.getOrDefault("array.1.x",
-                "nonexistent"));
+        assertThat(yamlConfig.getOrDefault("array.1.x", "nonexistent"),
+                is("nonexistent"));
     }
 
     @Test
     public void testGetOrDefaultWithIndicesForJSON()
     {
-        assertEquals("world", jsonConfig.getOrDefaultWithIndices("array.#.key",
-                "", 1));
+        assertThat(jsonConfig.getOrDefaultWithIndices("array.#.key", "", 1),
+                is("world"));
     }
 
     @Test
     public void testGetOrDefaultWithIndicesForJSONHashtag()
     {
-        assertEquals("hashtag", jsonConfig.getOrDefaultWithIndices(
-                "\\#.value.key", "", 1));
+        assertThat(jsonConfig.getOrDefaultWithIndices("\\#.value", "", 1),
+                is("hashtag"));
     }
 
     @Test
     public void testGetForJSON()
     {
-        assertEquals("hello", jsonConfig.<String>get("path.to.value")
-                .orElse(""));
+        assertThat(jsonConfig.<String>get("path.to.value")
+                .orElse(""), is("hello"));
     }
 
     @Test
     public void testGetForJSONNonExistent()
     {
-        assertEquals(Optional.empty(), jsonConfig.<String>get("path.to.x"));
+        assertThat(jsonConfig.<String>get("path.to.x"), is(Optional.empty()));
     }
 
     @Test
     public void testGetWithIndicesForJSON()
     {
-        assertEquals("world", jsonConfig.<String>getWithIndices("array.#.key",
-                1).orElse(""));
+        assertThat(jsonConfig.<String>getWithIndices("array.#.key", 1).orElse(""),
+                is("world"));
     }
 
     @Test
     public void testGetForJSONInteger()
     {
-        assertEquals(2, jsonConfig.<Integer>get("path.to.int").orElse(0) / 2);
+        assertThat(jsonConfig.<Integer>get("path.to.int").orElse(0) / 2, is(2));
     }
 
     @Test
     public void testGetForJSONNull()
     {
-        assertEquals(1, jsonConfig.<Integer>get("path.to.null").orElse(3) / 2);
+        assertThat(jsonConfig.<Integer>get("path.to.null").orElse(3) / 2, is(1));
     }
 }

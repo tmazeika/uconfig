@@ -202,7 +202,7 @@ public abstract class Config
      *     </tr>
      *     <tr>
      *         <td>"root.path.item.1"</td>
-     *         <td>{@code defaultValue}</td>
+     *         <td>""</td>
      *     </tr>
      *     <tr>
      *         <td>"root.path.item.0.attr"</td>

@@ -26,6 +26,8 @@ public abstract class Parser
                 return new YAMLParser();
             case "xml":
                 return new XMLParser();
+            case "properties":
+                return new PropertiesParser();
             default:
                 throw new UnsupportedOperationException(
                         ext + " file type not supported");

@@ -46,7 +46,15 @@ class UConfig extends Config
 
         Object data = getData();
 
-        for (String keyPart : parsedKey) {
+        for (int i = 0; i < parsedKey.length; i++) {
+            String keyPart = parsedKey[i];
+
+            // noinspection StringEquality
+            if (! (data instanceof Map) && ! (data instanceof List)
+                    &&  i == parsedKey.length - 1) {
+                return defaultValue;
+            }
+
             if (isPositiveInteger(keyPart)) {
                 if (data instanceof List) {
                     final int keyPartInt = Integer.parseUnsignedInt(keyPart);
@@ -110,6 +118,8 @@ class UConfig extends Config
             return defaultValue;
         }
 
+        final String dataStr = data.toString();
+
         /*
         Check if the return type should be a string... if so, we'll want to
         convert whatever it is we're going to return into a string so that
@@ -117,7 +127,24 @@ class UConfig extends Config
          */
         if (defaultValue instanceof String) {
             // noinspection unchecked
-            return (T) data.toString();
+            return (T) dataStr;
+        }
+
+        /*
+        Properties files only give strings when accessing keys. As such, they
+        will be converted to their correct type if they're requested to be an
+        int or double.
+         */
+        if (parserType == ParserType.PROPERTIES) {
+            if (defaultValue instanceof Integer) {
+                // noinspection unchecked
+                return (T) (Integer) Integer.parseInt(dataStr);
+            }
+
+            if (defaultValue instanceof Double) {
+                // noinspection unchecked
+                return (T) (Double) Double.parseDouble(dataStr);
+            }
         }
 
         // noinspection unchecked

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -11,6 +12,25 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
+    <name>uconfig</name>
+    <description>
+        Universal Config - A well documented, lightweight, completely
+        thread-safe, unit tested, easy to use Java 8 config library.
+    </description>
+    <url>https://github.com/bionicrm/uconfig</url>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/bionicrm/uconfig/blob/master/LICENSE.md</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/bionicrm/uconfig</url>
+    </scm>
 
     <build>
         <plugins>

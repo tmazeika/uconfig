@@ -21,7 +21,7 @@ class UConfig extends Config
 
     private Object data;
 
-    UConfig(File file, boolean lazyLoad)
+    public UConfig(File file, boolean lazyLoad)
     {
         this.file = file;
         parser = Parser.create(file.getName());

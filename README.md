@@ -1,4 +1,4 @@
-# uconfig (Universal Config)
+# uconfig (Universal Config) [![Build Status](https://travis-ci.org/bionicrm/uconfig.svg?branch=master)](https://travis-ci.org/bionicrm/uconfig)
 
 uconfig is a Java 8 config library. It's well documented, lightweight, completely thread-safe, unit tested, and easy to use. It can parse:
 

@@ -14,7 +14,7 @@ Usage is ridiculously easy. First, if you're using Maven, just add the following
 
 ```xml
 <dependency>
-    <groupId>io.uconfig</groupId>
+    <groupId>me.mazeika.uconfig</groupId>
     <artifactId>uconfig</artifactId>
     <version>0.1</version>
 </dependency>

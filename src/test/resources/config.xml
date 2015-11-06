@@ -1,0 +1,10 @@
+<root>
+    <path>
+        <to>
+            <value>hello</value>
+        </to>
+        <item attr="world"/>
+        <item></item>
+        <anotherBlank/>
+    </path>
+</root>

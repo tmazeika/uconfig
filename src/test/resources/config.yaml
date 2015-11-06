@@ -1,0 +1,10 @@
+path:
+  to:
+    value: hello
+    double: 3.14
+    int: 5
+    null: ~
+    empty:
+array:
+  - item0
+  - key: world

@@ -13,6 +13,7 @@ public abstract class Config
      *     <li><a href="http://www.json.org/">JSON</a></li>
      *     <li><a href="http://yaml.org/">YAML</a></li>
      *     <li><a href="https://en.wikipedia.org/wiki/XML">XML</a></li>
+     *     <li><a href="https://en.wikipedia.org/wiki/.properties">Properties</a></li>
      * </ul>
      * Valid file extensions include:
      * <ul>
@@ -20,6 +21,7 @@ public abstract class Config
      *     <li>.yaml</li>
      *     <li>.yml</li>
      *     <li>.xml</li>
+     *     <li>.properties</li>
      * </ul>
      *
      * @param file the file to load and parse
